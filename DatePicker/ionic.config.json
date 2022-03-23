@@ -1,0 +1,7 @@
+{
+  "name": "DatePicker",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
