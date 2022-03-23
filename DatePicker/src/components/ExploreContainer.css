@@ -25,5 +25,15 @@
 
 .container * {
   margin: auto;
+  margin-top: 10px;
   text-align: center;
+}
+
+.datePicked {
+  text-align: center;
+  background-color: #4281A4;
+  color: white;
+  padding: 7px;
+  margin: 7px;
+  border-radius: 5px;
 }
