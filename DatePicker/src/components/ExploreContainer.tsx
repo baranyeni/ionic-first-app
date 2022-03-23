@@ -1,13 +1,28 @@
 import './ExploreContainer.css';
+import {DatetimeChangeEventDetail, IonButton, IonDatetime, IonTitle} from "@ionic/react";
 
-interface ContainerProps { }
+import React, {useState, useRef} from 'react';
+
+interface ContainerProps {
+}
 
 const ExploreContainer: React.FC<ContainerProps> = () => {
-  return (
-    <div className="container">
-      <strong>Ready to create an app?</strong>
-      <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-    </div>
+    const [popoverDate, setPopoverDate] = useState('');
+
+    function setDate(ev: CustomEvent<DatetimeChangeEventDetail>) {
+        let pickedDate = new Date(ev.detail.value!);
+        setPopoverDate(pickedDate.toLocaleDateString("en-US"));
+    }
+
+    return (
+      <div>
+          <IonTitle>
+              { popoverDate }
+          </IonTitle>
+            <div className="container">
+                <IonDatetime locale="en-GB-u-hc-h12" onIonChange={ev => setDate(ev)} ></IonDatetime>
+            </div>
+      </div>
   );
 };
 

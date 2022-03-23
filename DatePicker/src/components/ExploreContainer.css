@@ -22,3 +22,8 @@
 .container a {
   text-decoration: none;
 }
+
+.container * {
+  margin: auto;
+  text-align: center;
+}
