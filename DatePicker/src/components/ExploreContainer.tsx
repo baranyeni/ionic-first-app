@@ -10,7 +10,7 @@ import {
     IonTitle
 } from "@ionic/react";
 
-import React, {useState, useRef} from 'react';
+import React, {useState} from 'react';
 
 interface ContainerProps {
 }
@@ -25,19 +25,17 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
     const today         = new Date().toLocaleDateString('en-CA');
     function setDate(ev: CustomEvent<DatetimeChangeEventDetail>) {
         setSelectedDate(new Date(ev.detail.value!).toLocaleDateString('en-CA'));
-        console.log(selectedDate);
         let pickedDate = new Date(ev.detail.value!);
         let today      = new Date();
         let diff       = Math.floor((today.valueOf() - pickedDate.valueOf()) / _MS_PER_DAY );
         let diff_min   = Math.floor((today.valueOf() - pickedDate.valueOf()) / (_MS_PER_DAY / (24 * 60)) );
 
-        let years  = Math.floor(diff/365);
-        diff = diff - (years*365);
-        let months = Math.floor(diff/30)
-        let days = (diff % 30);
-        let hours = Math.floor((diff_min-(days*24*60)) / 60);
-
-
+        let years   = Math.floor(diff/365);
+        diff        = diff - (years*365);
+        let months  = Math.floor(diff/30)
+        diff        = diff - (months*30);
+        let days    = diff;
+        let hours   = Math.floor((diff_min - (years*365*24*60 + months*30*24*60 + days*24*60)) / 60);
         let minutes = diff_min - (years*365*24*60 + months*30*24*60 + days*24*60 + hours*60);
 
         reverseView();
