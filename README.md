@@ -55,8 +55,8 @@ Above command will ask for what device you want to emulate on and then will brin
 See below to have a better understanding of this app!
 
 <p float="left">
-  <img src="DatePicker/README_/emulator.gif" width="200" hspace="20"/>
-  <img src="DatePicker/README_/image1.png"   width="209" hspace="20"/>
-  <img src="DatePicker/README_/image2.png"   width="212" hspace="20"/>
-  <img src="DatePicker/README_/image3.png"   width="215" hspace="20"/>
+  <img src="DatePicker/README_/emulator.gif" width="120" hspace="20"/>
+  <img src="DatePicker/README_/image1.png"   width="129" hspace="20"/>
+  <img src="DatePicker/README_/image2.png"   width="132" hspace="20"/>
+  <img src="DatePicker/README_/image3.png"   width="135" hspace="20"/>
 </p>
