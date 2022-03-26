@@ -40,7 +40,7 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
 
         reverseView();
 
-        setPopoverDate(`${years} years, ${months} months, ${days} days, ${hours} hours, ${minutes} minutes`);
+        setPopoverDate(`${years} years, ${months} months, ${days} days, ${hours} hours, ${minutes} mins`);
     }
 
     function reverseView() {
