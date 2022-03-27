@@ -51,7 +51,7 @@ $ ionic capacitor build ios
 Above command will ask for what device you want to emulate on and then will bring the selected iOS device running your application.
 
 
-## 📸 Screenshoots 
+## 📸 Screenshots 
 See below to have a better understanding of this app!
 
 <p float="left">
