@@ -1,89 +1,91 @@
 import './ExploreContainer.css';
 import {
-    DatetimeChangeEventDetail,
-    IonButton,
     IonCol,
-    IonContent,
-    IonDatetime, IonGrid,
-    IonModal, IonRow,
-    IonText,
-    IonTitle
+    IonGrid,
+    IonRow,
+    IonText, useIonViewWillEnter,
 } from "@ionic/react";
 
 import React, {useState} from 'react';
+
+import TinderCard from 'react-tinder-card'
+import axios from "axios";
+import {Storage} from "@capacitor/storage";
 
 interface ContainerProps {
 }
 
 const ExploreContainer: React.FC<ContainerProps> = () => {
-    const _MS_PER_DAY = 1000 * 60 * 60 * 24;
-    const [selectedDate, setSelectedDate] = useState('SELECTED DATE');
-    const [popoverDate, setPopoverDate] = useState('Years, Months, Days, Minutes');
-    const [hideButton, setButtonDisable] = React.useState(false);
-    const [hidePicker, setPickerDisable] = React.useState(true);
+    const BE_URL = 'https://work-n-travel-coffees.herokuapp.com'
 
-    const today         = new Date().toLocaleDateString('en-CA');
-    function setDate(ev: CustomEvent<DatetimeChangeEventDetail>) {
-        setSelectedDate(new Date(ev.detail.value!).toLocaleDateString('en-CA'));
-        let pickedDate = new Date(ev.detail.value!);
-        let today      = new Date();
-        let diff       = Math.floor((today.valueOf() - pickedDate.valueOf()) / _MS_PER_DAY );
-        let diff_min   = Math.floor((today.valueOf() - pickedDate.valueOf()) / (_MS_PER_DAY / (24 * 60)) );
+    const getBearer = async () => {
+        const { value } = await Storage.get({ key: 'bearer' });
+        return value;
+    };
 
-        let years   = Math.floor(diff/365);
-        diff        = diff - (years*365);
-        let months  = Math.floor(diff/30)
-        diff        = diff - (months*30);
-        let days    = diff;
-        let hours   = Math.floor((diff_min - (years*365*24*60 + months*30*24*60 + days*24*60)) / 60);
-        let minutes = diff_min - (years*365*24*60 + months*30*24*60 + days*24*60 + hours*60);
-
-        reverseView();
-
-        setPopoverDate(`${years} years, ${months} months, ${days} days, ${hours} hours, ${minutes} mins`);
-    }
-
-    function reverseView() {
-        if (hideButton) {
-            setButtonDisable(false);
-            setPickerDisable(true);
-        } else {
-            setButtonDisable(true);
-            setPickerDisable(false);
+    const shopsLoading = [
+        {
+            name: 'Fetching..',
+            imageUrl: 'https://i.pinimg.com/originals/49/23/29/492329d446c422b0483677d0318ab4fa.gif',
+            city: '',
+            address: ''
         }
+    ]
+
+    const shopsError = [
+        {
+            name: 'BASE64',
+            imageUrl: 'data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7',
+            city: '',
+            address: ''
+        }
+    ]
+
+    const [lastDirection, setLastDirection] = useState()
+    const [shops, setShops] = useState(shopsLoading)
+
+    useIonViewWillEnter(() => {
+        getBearer().then((auth_token)=>{
+            if (auth_token != null) {
+                axios.get(`${BE_URL}/shops/list/`,
+                    {headers: {"Access-Control-Allow-Origin": "*","Authorization": auth_token }}).then((res: any) => {
+                        if (res.status == 200) {
+                            setShops(res.data);
+                        }
+                    }).catch((error: any) => {
+                    console.log(error)
+                });
+            } else {
+                setShops(shopsError);
+            }
+        });
+    });
+
+    const swiped = (direction: any, nameToDelete: any) => {
+        setLastDirection(direction)
     }
 
+    const outOfFrame = (name: any) => {
+        console.log(name + ' left the screen!')
+    }
     return (
-        <IonGrid className={"ion-align-items-baseline vertical-align"}>
+        <IonGrid className={"ion-align-items-start vertical-align"}>
             <IonRow>
-                <IonCol className={"ion-text-center"}>
-                    <IonText className={"font1"} color={"primary"}>Calculate Your</IonText>
+                <IonCol>
+                    {shops.map((shop) =>
+                        <TinderCard className='swipe' key={shop.name} onSwipe={(dir) => swiped(dir, shop.name)} onCardLeftScreen={() => outOfFrame(shop.name)}>
+                            <div style={{ backgroundImage: "url('" + shop.imageUrl + "')" }} className='card'>
+                                <div className="bottomTextContainer">
+                                    <h2 className="cardText">{shop.name}</h2>
+                                    <p className="cardText">{shop.city}</p>
+                                    <p className="cardText">{shop.address}</p>
+                                </div>
+                            </div>
+                        </TinderCard>
+                    )}
+
                 </IonCol>
-            </IonRow>
-            <IonRow>
-                <IonCol className={"ion-text-center"}>
-                    <IonText className={"font2"}>Age</IonText>
-                </IonCol>
-            </IonRow>
-            <IonRow>
-                <IonCol className={"ion-text-center"}>
-                    <IonDatetime size={"cover"} hidden={hidePicker} onIonCancel={() => reverseView()} max={today} showDefaultButtons={true} locale="en-GB-u-hc-h12" onIonChange={ev => setDate(ev)} ></IonDatetime>
-                    <IonButton hidden={hideButton} onClick={() => reverseView()}>Pick a date!</IonButton>
-                </IonCol>
-            </IonRow>
-            <IonRow>
-                <IonCol className={"ion-text-center"}>
-                    <IonText>
-                        { selectedDate }
-                    </IonText>
-                </IonCol>
-            </IonRow>
-            <IonRow>
-                <IonCol className={"ion-text-center"}>
-                    <IonTitle class={"datePicked"}>
-                        { popoverDate }
-                    </IonTitle>
-                </IonCol>
+                {lastDirection ? <h2 className='infoText'>You swiped {lastDirection}</h2> : <h2 className='infoText' />}
             </IonRow>
     </IonGrid>
   );

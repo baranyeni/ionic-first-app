@@ -1,5 +1,18 @@
-import {IonContent, IonDatetime, IonHeader, IonPage, IonTitle, IonToolbar} from '@ionic/react';
+import {
+    IonIcon,
+    IonLabel,
+    IonContent,
+    IonTabBar,
+    IonTabButton,
+    IonHeader,
+    IonPage,
+    IonTitle,
+    IonToolbar,
+    IonButtons,
+    IonMenuButton
+} from '@ionic/react';
 import ExploreContainer from '../components/ExploreContainer';
+import { ellipse, home, settings } from 'ionicons/icons';
 import './Home.css';
 
 const Home: React.FC = () => {
@@ -7,12 +20,27 @@ const Home: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Age calculator</IonTitle>
+            <IonButtons>
+                <IonMenuButton></IonMenuButton>
+            </IonButtons>
+            <IonTitle>WnTC</IonTitle>
         </IonToolbar>
       </IonHeader>
+
       <IonContent fullscreen>
           <ExploreContainer />
-      </IonContent>
+      </IonContent>webpack.config.common.js:
+    <IonTabBar slot="bottom">
+        <IonTabButton tab="tab1" href="/home1">
+            <IonIcon icon={ellipse} />
+        </IonTabButton>
+        <IonTabButton tab="tab2" href="/home">
+            <IonIcon icon={home} />
+        </IonTabButton>
+        <IonTabButton tab="tab3" href="/settings">
+            <IonIcon icon={settings} />
+        </IonTabButton>
+    </IonTabBar>
     </IonPage>
   );
 };
