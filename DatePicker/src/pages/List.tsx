@@ -10,14 +10,16 @@ import {
     IonToolbar,
     IonButtons,
     IonMenuButton,
-    useIonViewWillEnter
+    useIonViewWillEnter,
+    IonList,
+    IonItem
 } from '@ionic/react';
 import ExploreContainer from '../components/ExploreContainer';
 import { cafe, home, settings } from 'ionicons/icons';
 import './Home.css';
 import {Storage} from "@capacitor/storage";
 
-const Home: React.FC = () => {
+const List: React.FC = () => {
     const getBearer = async () => {
         const { value } = await Storage.get({ key: 'bearer' });
         return value;
@@ -37,12 +39,28 @@ const Home: React.FC = () => {
             <IonButtons>
                 <IonMenuButton></IonMenuButton>
             </IonButtons>
-            <IonTitle>WnTC</IonTitle>
+            <IonTitle>Loved ones ❤️</IonTitle>
         </IonToolbar>
       </IonHeader>
 
       <IonContent fullscreen>
-          <ExploreContainer />
+          <IonList>
+              <IonItem>
+                  <IonLabel>Starbucks Coffee - Beyoğlu</IonLabel>
+              </IonItem>
+              <IonItem>
+                  <IonLabel>NOVE - Cadde</IonLabel>
+              </IonItem>
+              <IonItem>
+                  <IonLabel>Nero express - Maltepe</IonLabel>
+              </IonItem>
+              <IonItem>
+                  <IonLabel>Kahve Dünyası - Üsküdar</IonLabel>
+              </IonItem>
+              <IonItem>
+                  <IonLabel>Caribou Coffee - Marina</IonLabel>
+              </IonItem>
+          </IonList>
       </IonContent>
     <IonTabBar slot="bottom">
         <IonTabButton tab="tab1" href="/list">
@@ -59,4 +77,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default List;
